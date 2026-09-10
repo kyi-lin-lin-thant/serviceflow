@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
-use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse;
 use App\Models\Service;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class ServiceController extends Controller
 {
@@ -43,7 +43,7 @@ class ServiceController extends Controller
         ]);
     }
 
-    public function destory(Service $service): Response
+    public function destroy(Service $service): Response
     {
         $service->delete();
 
