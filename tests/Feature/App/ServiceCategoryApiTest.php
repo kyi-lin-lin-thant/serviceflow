@@ -216,6 +216,67 @@ test('updating a non-existent service category returns not found', function () {
     $response->assertStatus(404);
 });
 
+// Patch | Partial update
+test('a service category can be partially updated', function () {
+    $serviceCategory = ServiceCategory::factory()->create([
+        'name' => 'Cleaning',
+        'description' => 'Professional cleaning services',
+        'status' => 'active',
+    ]);
+
+    $response = $this->patchJson(
+        "/api/service-categories/{$serviceCategory->id}",
+        [
+            'status' => 'inactive',
+        ]
+    );
+
+    $response
+        ->assertStatus(200)
+        ->assertJsonPath('data.name', 'Cleaning')
+        ->assertJsonPath('data.description', 'Professional cleaning services')
+        ->assertJsonPath('data.status', 'inactive');
+
+    $this->assertDatabaseHas('service_categories', [
+        'id' => $serviceCategory->id,
+        'name' => 'Cleaning',
+        'status' => 'inactive',
+    ]);
+});
+
+// Patch | Duplicate name
+test('service category patch fails with a duplicate name', function () {
+    $existingCategory = ServiceCategory::factory()->create([
+        'name' => 'Cleaning',
+    ]);
+
+    $serviceCategory = ServiceCategory::factory()->create([
+        'name' => 'Maintenance',
+    ]);
+
+    $response = $this->patchJson(
+        "/api/service-categories/{$serviceCategory->id}",
+        [
+            'name' => $existingCategory->name,
+        ]
+    );
+
+    $response
+        ->assertStatus(422)
+        ->assertJsonValidationErrors([
+            'name',
+        ]);
+});
+
+// Patch | Not found
+test('patching a non-existent service category returns not found', function () {
+    $response = $this->patchJson('/api/service-categories/9999', [
+        'status' => 'inactive',
+    ]);
+
+    $response->assertStatus(404);
+});
+
 // Delete | Soft delete
 test('a service category can be soft deleted', function () {
     $serviceCategory = ServiceCategory::factory()->create();

@@ -173,6 +173,74 @@ test('updating a non-existent service returns not found', function () {
     $response->assertStatus(404);
 });
 
+// Patch | Success Testcase
+test('a service can be partially updated', function () {
+    $category = ServiceCategory::factory()->create();
+
+    $service = Service::create([
+        'name' => 'House Cleaning',
+        'description' => 'Professional cleaning service',
+        'category_id' => $category->id,
+        'price' => 50.00,
+        'duration_minutes' => 120,
+        'status' => 'active',
+    ]);
+
+    $response = $this->patchJson("/api/services/{$service->id}", [
+        'price' => 75.00,
+    ]);
+
+    $response
+        ->assertStatus(200)
+        ->assertJsonPath('data.name', 'House Cleaning')
+        ->assertJsonPath('data.description', 'Professional cleaning service')
+        ->assertJsonPath('data.price', '75.00')
+        ->assertJsonPath('data.duration_minutes', 120)
+        ->assertJsonPath('data.status', 'active');
+
+    $this->assertDatabaseHas('services', [
+        'id' => $service->id,
+        'price' => 75.00,
+        'status' => 'active',
+    ]);
+});
+
+// Patch | Fail Testcase
+test('service patch fails with invalid data', function () {
+    $category = ServiceCategory::factory()->create();
+
+    $service = Service::create([
+        'name' => 'House Cleaning',
+        'description' => 'Professional cleaning service',
+        'category_id' => $category->id,
+        'price' => 50.00,
+        'duration_minutes' => 120,
+        'status' => 'active',
+    ]);
+
+    $response = $this->patchJson("/api/services/{$service->id}", [
+        'price' => -10,
+        'duration_minutes' => 0,
+        'status' => 'unknown',
+    ]);
+
+    $response
+        ->assertStatus(422)
+        ->assertJsonValidationErrors([
+            'price',
+            'duration_minutes',
+            'status',
+        ]);
+});
+
+test('patching a non-existent service returns not found', function () {
+    $response = $this->patchJson('/api/services/9999', [
+        'price' => 75.00,
+    ]);
+
+    $response->assertStatus(404);
+});
+
 // Delete | Success Testcase
 test('a service can be soft deleted', function () {
     $category = ServiceCategory::factory()->create();

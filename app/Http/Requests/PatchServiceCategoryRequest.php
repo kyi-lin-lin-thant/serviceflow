@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateServiceCategoryRequest extends FormRequest
+class PatchServiceCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,16 +25,23 @@ class UpdateServiceCategoryRequest extends FormRequest
     {
         return [
             'name' => [
-                'required', 
-                'string', 
-                'max:255', 
+                'sometimes',
+                'string',
+                'max:255',
                 Rule::unique('service_categories', 'name')
                     ->ignore($this->route('serviceCategory')),
             ],
 
-            'description' => ['nullable', 'string'],
+            'description' => [
+                'sometimes',
+                'nullable',
+                'string',
+            ],
 
-            'status' => ['required', 'in:active,inactive'],
+            'status' => [
+                'sometimes',
+                'in:active,inactive',
+            ],
         ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
+use App\Http\Requests\PatchServiceRequest;
 use App\Models\Service;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -34,6 +35,16 @@ class ServiceController extends Controller
     } 
 
     public function update(UpdateServiceRequest $request, Service $service): JsonResponse
+    {
+        $service->update($request->validated());
+
+        return response()->json([
+            'message' => 'Service updated successfully.',
+            'data' => $service->fresh(),
+        ]);
+    }
+
+    public function patch(PatchServiceRequest $request, Service $service): JsonResponse
     {
         $service->update($request->validated());
 

@@ -2,8 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\ServiceCategoryController;
+use App\Http\Controllers\Api\ServiceController;
+use App\Http\Controllers\Api\BookingController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -14,7 +15,7 @@ Route::get('/service-categories', [ServiceCategoryController::class, 'index']);
 Route::post('/service-categories', [ServiceCategoryController::class, 'store']);
 Route::get('/service-categories/{serviceCategory}', [ServiceCategoryController::class, 'show']);
 Route::put('/service-categories/{serviceCategory}', [ServiceCategoryController::class, 'update']);
-// Route::patch('/service-categories/{serviceCategory}', [ServiceCategoryController::class, 'update']);
+Route::patch('/service-categories/{serviceCategory}', [ServiceCategoryController::class, 'patch']);
 Route::delete('/service-categories/{serviceCategory}', [ServiceCategoryController::class, 'destroy']);
 
 // Services
@@ -22,5 +23,13 @@ Route::get('/services', [ServiceController::class, 'index']);
 Route::post('/services', [ServiceController::class, 'store']);
 Route::get('/services/{service}', [ServiceController::class, 'show']);
 Route::put('/services/{service}', [ServiceController::class, 'update']);
-// Route::patch('/services/{service}', [ServiceController::class, 'update']);
+Route::patch('/services/{service}', [ServiceController::class, 'patch']);
 Route::delete('/services/{service}', [ServiceController::class, 'destroy']);
+
+// Bookings
+Route::get('/bookings', [BookingController::class, 'index']);
+Route::post('/bookings', [BookingController::class, 'store']);
+Route::get('/bookings/{booking}', [BookingController::class, 'show']);
+Route::put('/bookings/{booking}', [BookingController::class, 'update']);
+Route::patch('/bookings/{booking}', [BookingController::class, 'update']);
+Route::delete('/bookings/{booking}', [BookingController::class, 'destroy']);

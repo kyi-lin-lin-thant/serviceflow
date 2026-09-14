@@ -4,9 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateServiceCategoryRequest extends FormRequest
+class UpdateBookingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,16 +23,12 @@ class UpdateServiceCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => [
-                'required', 
-                'string', 
-                'max:255', 
-                Rule::unique('service_categories', 'name')
-                    ->ignore($this->route('serviceCategory')),
-            ],
-
-            'description' => ['nullable', 'string'],
-
+            'customer_id' => [],
+            'service_id' => [],
+            'booking_date' => [],
+            'booking_time' => [],
+            'address' => [],
+            'notes' => [],
             'status' => ['required', 'in:active,inactive'],
         ];
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreServiceCategoryRequest;
 use App\Http\Requests\UpdateServiceCategoryRequest;
+use App\Http\Requests\PatchServiceCategoryRequest;
 use App\Models\ServiceCategory;
 use Illuminate\Http\JsonResponse;
 
@@ -33,6 +34,16 @@ class ServiceCategoryController extends Controller
     } 
 
     public function update(UpdateServiceCategoryRequest $request, ServiceCategory $serviceCategory): JsonResponse
+    {
+        $serviceCategory->update($request->validated());
+
+        return response()->json([
+            'message' => 'Service Category updated successfully.',
+            'data' => $serviceCategory->fresh(),
+        ]);
+    }
+
+    public function patch(PatchServiceCategoryRequest $request, ServiceCategory $serviceCategory): JsonResponse
     {
         $serviceCategory->update($request->validated());
 
