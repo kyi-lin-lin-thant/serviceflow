@@ -8,15 +8,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class JobAssignment extends Model
 {
     protected $fillable = [
-        'job_id', 
-        'staff_id', 
-        'assigned_at', 
-        'accepted_at', 
+        'job_id',
+        'staff_id',
+        'assigned_at',
+        'accepted_at',
         'unassigned_at',
         'status',
     ];
 
-    protected function casts():array
+    protected function casts(): array
     {
         return [
             'assigned_at' => 'datetime',
@@ -25,11 +25,17 @@ class JobAssignment extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<ServiceJob, $this>
+     */
     public function job(): BelongsTo
     {
         return $this->belongsTo(ServiceJob::class);
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function staff(): BelongsTo
     {
         return $this->belongsTo(User::class, 'staff_id');

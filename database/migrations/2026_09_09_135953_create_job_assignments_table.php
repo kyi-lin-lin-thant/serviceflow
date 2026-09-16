@@ -15,18 +15,18 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('job_id')
-                    ->constrained('service_jobs')
-                    ->restrictOnDelete();
+                ->constrained('service_jobs')
+                ->restrictOnDelete();
 
             $table->foreignId('staff_id')
-                    ->constrained('users')
-                    ->restrictOnDelete();
+                ->constrained('users')
+                ->restrictOnDelete();
 
             $table->timestamp('assigned_at')->nullable();
             $table->timestamp('accepted_at')->nullable();
             $table->timestamp('unassigned_at')->nullable();
             $table->string('status')->default('pending');
-            
+
             $table->timestamps();
         });
     }

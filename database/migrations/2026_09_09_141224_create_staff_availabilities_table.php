@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('staff_id')
-                    ->constrained('users')
-                    ->restrictOnDelete();
+                ->constrained('users')
+                ->restrictOnDelete();
 
             $table->unsignedTinyInteger('day_of_week');
 
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->boolean('is_available')->default(true);
 
             $table->unique(['staff_id', 'day_of_week']);
-            
+
             $table->timestamps();
         });
     }

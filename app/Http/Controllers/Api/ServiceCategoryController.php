@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PatchServiceCategoryRequest;
 use App\Http\Requests\StoreServiceCategoryRequest;
 use App\Http\Requests\UpdateServiceCategoryRequest;
-use App\Http\Requests\PatchServiceCategoryRequest;
 use App\Models\ServiceCategory;
 use Illuminate\Http\JsonResponse;
 
@@ -31,7 +31,7 @@ class ServiceCategoryController extends Controller
     public function show(ServiceCategory $serviceCategory): JsonResponse
     {
         return response()->json($serviceCategory);
-    } 
+    }
 
     public function update(UpdateServiceCategoryRequest $request, ServiceCategory $serviceCategory): JsonResponse
     {
@@ -64,5 +64,5 @@ class ServiceCategoryController extends Controller
         $serviceCategory->delete();
 
         return response()->json(null, 204);
-  }
+    }
 }

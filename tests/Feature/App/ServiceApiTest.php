@@ -17,8 +17,8 @@ test('a valid service can be created', function () {
     ]);
 
     $response
-            ->assertStatus(201)
-            ->assertJsonPath('data.name', 'Office Cleaning');
+        ->assertStatus(201)
+        ->assertJsonPath('data.name', 'Office Cleaning');
 
     $this->assertDatabaseHas('services', [
         'name' => 'Office Cleaning',
@@ -36,11 +36,11 @@ test('service creation fails when required fields are missing', function () {
     ]);
 
     $response
-            ->assertStatus(422)
-            ->assertJsonValidationErrors([
-                'name',
-                'category_id',
-            ]);
+        ->assertStatus(422)
+        ->assertJsonValidationErrors([
+            'name',
+            'category_id',
+        ]);
 });
 
 test('service creation fails with an invalid category', function () {
@@ -89,7 +89,7 @@ test('a valid service can be updated', function () {
         ->assertJsonPath('message', 'Service updated successfully.')
         ->assertJsonPath('data.name', 'Premium House Cleaning')
         ->assertJsonPath('data.category_id', $newCategory->id);
-    
+
     $this->assertDatabaseHas('services', [
         'id' => $service->id,
         'name' => 'Premium House Cleaning',

@@ -338,4 +338,3 @@ test('deleting a non-existent service category returns not found', function () {
 
     $response->assertStatus(404);
 });
-

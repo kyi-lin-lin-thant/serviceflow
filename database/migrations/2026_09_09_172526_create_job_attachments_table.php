@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('job_id')
-                    ->constrained('service_jobs')
-                    ->restrictOnDelete();
+                ->constrained('service_jobs')
+                ->restrictOnDelete();
 
             $table->string('file_path');
             $table->string('file_name');

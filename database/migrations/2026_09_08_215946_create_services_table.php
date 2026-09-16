@@ -18,13 +18,13 @@ return new class extends Migration
             $table->text('description')->nullable();
 
             $table->foreignId('category_id')
-                    ->constrained('service_categories')
-                    ->restrictOnDelete();
+                ->constrained('service_categories')
+                ->restrictOnDelete();
 
             $table->decimal('price', 10, 2);
             $table->unsignedInteger('duration_minutes');
             $table->string('status')->default('active');
-            
+
             $table->timestamps();
             $table->softDeletes();
         });

@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('booking_id')
-                    ->unique()
-                    ->constrained('bookings')
-                    ->restrictOnDelete();
-            
+                ->unique()
+                ->constrained('bookings')
+                ->restrictOnDelete();
+
             $table->foreignId('customer_id')
-                    ->constrained('users')
-                    ->restrictOnDelete();
+                ->constrained('users')
+                ->restrictOnDelete();
 
             $table->unsignedInteger('rating');
             $table->text('comment')->nullable();

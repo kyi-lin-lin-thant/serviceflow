@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('user_id')
-                    ->constrained('users')
-                    ->restrictOnDelete();
+                ->constrained('users')
+                ->restrictOnDelete();
 
             $table->string('type');
             $table->string('title');

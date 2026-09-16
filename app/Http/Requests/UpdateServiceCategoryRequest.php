@@ -25,9 +25,9 @@ class UpdateServiceCategoryRequest extends FormRequest
     {
         return [
             'name' => [
-                'required', 
-                'string', 
-                'max:255', 
+                'required',
+                'string',
+                'max:255',
                 Rule::unique('service_categories', 'name')
                     ->ignore($this->route('serviceCategory')),
             ],

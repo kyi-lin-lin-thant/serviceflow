@@ -15,15 +15,15 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('invoice_id')
-                    ->constrained('invoices')
-                    ->restrictOnDelete();
+                ->constrained('invoices')
+                ->restrictOnDelete();
 
             $table->string('description')->nullable();
 
             $table->unsignedInteger('quantity');
             $table->decimal('unit_price', 10, 2);
             $table->decimal('total', 10, 2);
-            
+
             $table->timestamps();
         });
     }

@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('customer_id')
-                    ->constrained('users')
-                    ->restrictOnDelete();
+                ->constrained('users')
+                ->restrictOnDelete();
 
             $table->foreignId('service_id')
-                    ->constrained('services')
-                    ->restrictOnDelete();
+                ->constrained('services')
+                ->restrictOnDelete();
 
             $table->date('booking_date');
             $table->time('booking_time');

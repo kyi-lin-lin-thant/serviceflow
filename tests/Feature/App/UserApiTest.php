@@ -1,9 +1,10 @@
 <?php
 
 use App\Enums\UserRole;
-use App\Models\User;
-use App\Models\Service;
 use App\Models\Booking;
+use App\Models\Service;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Hash;
 
 // Create User from Factories
@@ -65,7 +66,7 @@ test('user has a bookings relationship', function () {
     $user = User::factory()->create();
 
     expect($user->bookings())
-        ->toBeInstanceOf(\Illuminate\Database\Eloquent\Relations\HasMany::class);
+        ->toBeInstanceOf(HasMany::class);
 });
 
 // Users | Staffs & Job Assignments
@@ -73,7 +74,7 @@ test('user has staff relationships', function () {
     $user = User::factory()->staff()->create();
 
     expect($user->jobAssignments())
-        ->toBeInstanceOf(\Illuminate\Database\Eloquent\Relations\HasMany::class)
+        ->toBeInstanceOf(HasMany::class)
         ->and($user->staffAvailabilities())
-        ->toBeInstanceOf(\Illuminate\Database\Eloquent\Relations\HasMany::class);
+        ->toBeInstanceOf(HasMany::class);
 });

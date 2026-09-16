@@ -3,19 +3,19 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserRole;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Fortify\Contracts\PasskeyUser;
 use Laravel\Fortify\PasskeyAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use App\Enums\UserRole;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable implements PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable, SoftDeletes;
+    use HasFactory, Notifiable, PasskeyAuthenticatable, SoftDeletes, TwoFactorAuthenticatable;
 
     /**
      * Get the attributes that should be cast.
@@ -52,41 +52,65 @@ class User extends Authenticatable implements PasskeyUser
         ];
     }
 
+    /**
+     * @return HasMany<Booking, $this>
+     */
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class, 'customer_id');
     }
 
+    /**
+     * @return HasMany<JobAssignment, $this>
+     */
     public function jobAssignments(): HasMany
     {
         return $this->hasMany(JobAssignment::class, 'staff_id');
     }
 
+    /**
+     * @return HasMany<StaffAvailability, $this>
+     */
     public function staffAvailabilities(): HasMany
     {
         return $this->hasMany(StaffAvailability::class, 'staff_id');
     }
 
+    /**
+     * @return HasMany<Invoice, $this>
+     */
     public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class, 'customer_id');
     }
 
+    /**
+     * @return HasMany<Payment, $this>
+     */
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class, 'customer_id');
     }
 
+    /**
+     * @return HasMany<Review, $this>
+     */
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class, 'customer_id');
     }
 
+    /**
+     * @return HasMany<Notification, $this>
+     */
     public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class);
     }
 
+    /**
+     * @return HasMany<ActivityLog, $this>
+     */
     public function activityLogs(): HasMany
     {
         return $this->hasMany(ActivityLog::class);

@@ -22,7 +22,7 @@ return new class extends Migration
             // ServiceFlow
             $table->string('role')->default('customer');
             $table->string('phone')->nullable();
-            
+
             $table->timestamps();
             $table->softDeletes();
         });

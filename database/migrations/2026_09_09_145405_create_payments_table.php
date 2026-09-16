@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('invoice_id')
-                    ->constrained('invoices')
-                    ->restrictOnDelete();
-            
+                ->constrained('invoices')
+                ->restrictOnDelete();
+
             $table->foreignId('customer_id')
-                    ->constrained('users')
-                    ->restrictOnDelete();
+                ->constrained('users')
+                ->restrictOnDelete();
 
             $table->decimal('amount', 10, 2);
             $table->string('payment_method');

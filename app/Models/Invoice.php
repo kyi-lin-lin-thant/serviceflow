@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Invoice extends Model
 {
     protected $fillable = [
-        'booking_id', 
-        'customer_id', 
-        'invoice_number', 
+        'booking_id',
+        'customer_id',
+        'invoice_number',
         'subtotal',
         'vat',
         'discount',
@@ -22,7 +22,7 @@ class Invoice extends Model
         'paid_at',
     ];
 
-    protected function casts():array
+    protected function casts(): array
     {
         return [
             'subtotal' => 'decimal:2',
@@ -35,21 +35,33 @@ class Invoice extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<Booking, $this>
+     */
     public function booking(): BelongsTo
     {
         return $this->belongsTo(Booking::class);
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function customer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'customer_id');
     }
 
+    /**
+     * @return HasMany<InvoiceItem, $this>
+     */
     public function invoiceItems(): HasMany
     {
         return $this->hasMany(InvoiceItem::class);
     }
 
+    /**
+     * @return HasMany<Payment, $this>
+     */
     public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);

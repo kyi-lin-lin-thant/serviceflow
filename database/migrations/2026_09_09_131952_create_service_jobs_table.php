@@ -15,15 +15,15 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('booking_id')
-                    ->unique()
-                    ->constrained('bookings')
-                    ->restrictOnDelete();
+                ->unique()
+                ->constrained('bookings')
+                ->restrictOnDelete();
 
             $table->string('status')->default('pending');
             $table->timestamp('started_at')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->text('notes')->nullable();
-            
+
             $table->timestamps();
         });
     }

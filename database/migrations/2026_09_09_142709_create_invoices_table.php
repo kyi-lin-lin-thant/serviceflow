@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('booking_id')
-                    ->constrained('bookings')
-                    ->restrictOnDelete();
+                ->constrained('bookings')
+                ->restrictOnDelete();
 
             $table->foreignId('customer_id')
-                    ->constrained('users')
-                    ->restrictOnDelete();
+                ->constrained('users')
+                ->restrictOnDelete();
 
             $table->string('invoice_number')->unique();
 
@@ -34,7 +34,7 @@ return new class extends Migration
             $table->timestamp('issued_at')->nullable();
             $table->timestamp('due_at')->nullable();
             $table->timestamp('paid_at')->nullable();
-            
+
             $table->timestamps();
         });
     }

@@ -8,20 +8,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ActivityLog extends Model
 {
     protected $fillable = [
-        'user_id', 
-        'action', 
+        'user_id',
+        'action',
         'entity_type',
         'entity_id',
         'description',
     ];
 
-    protected function casts():array
+    protected function casts(): array
     {
         return [
             'entity_id' => 'integer',
         ];
     }
-    
+
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

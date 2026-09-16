@@ -9,26 +9,32 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class ServiceJob extends Model
 {
     protected $fillable = [
-        'booking_id', 
-        'status', 
-        'started_at', 
-        'completed_at', 
+        'booking_id',
+        'status',
+        'started_at',
+        'completed_at',
         'notes',
     ];
 
-    protected function casts():array
+    protected function casts(): array
     {
         return [
             'started_at' => 'datetime',
-            'completed_at' => 'datetime'
+            'completed_at' => 'datetime',
         ];
     }
 
+    /**
+     * @return BelongsTo<Booking, $this>
+     */
     public function booking(): BelongsTo
     {
         return $this->belongsTo(Booking::class);
     }
 
+    /**
+     * @return HasMany<JobAssignment, $this>
+     */
     public function jobAssignments(): HasMany
     {
         return $this->hasMany(JobAssignment::class);
