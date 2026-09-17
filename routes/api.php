@@ -20,11 +20,13 @@ Route::delete('/service-categories/{serviceCategory}', [ServiceCategoryControlle
 
 // Services
 Route::get('/services', [ServiceController::class, 'index']);
-Route::post('/services', [ServiceController::class, 'store']);
 Route::get('/services/{service}', [ServiceController::class, 'show']);
-Route::put('/services/{service}', [ServiceController::class, 'update']);
-Route::patch('/services/{service}', [ServiceController::class, 'patch']);
-Route::delete('/services/{service}', [ServiceController::class, 'destroy']);
+Route::middleware(['auth:sanctum', 'role:manager'])->group(function () {
+    Route::post('/services', [ServiceController::class, 'store']);
+    Route::put('/services/{service}', [ServiceController::class, 'update']);
+    Route::patch('/services/{service}', [ServiceController::class, 'patch']);
+    Route::delete('/services/{service}', [ServiceController::class, 'destroy']);
+});
 
 // Bookings
 Route::get('/bookings', [BookingController::class, 'index']);

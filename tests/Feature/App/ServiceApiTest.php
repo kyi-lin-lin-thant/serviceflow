@@ -2,19 +2,27 @@
 
 use App\Models\Service;
 use App\Models\ServiceCategory;
+use App\Models\User;
 
-// Create | Success Testcase
+/*
+|--------------------------------------------------------------------------
+| CREATE
+|--------------------------------------------------------------------------
+*/
+
 test('a valid service can be created', function () {
+    $manager = User::factory()->manager()->create();
     $category = ServiceCategory::factory()->create();
 
-    $response = $this->postJson('/api/services', [
-        'name' => 'Office Cleaning',
-        'description' => 'Professional office cleaning service',
-        'category_id' => $category->id,
-        'price' => 75.00,
-        'duration_minutes' => 180,
-        'status' => 'active',
-    ]);
+    $response = $this->actingAs($manager)
+        ->postJson('/api/services', [
+            'name' => 'Office Cleaning',
+            'description' => 'Professional office cleaning service',
+            'category_id' => $category->id,
+            'price' => 75.00,
+            'duration_minutes' => 180,
+            'status' => 'active',
+        ]);
 
     $response
         ->assertStatus(201)
@@ -26,14 +34,16 @@ test('a valid service can be created', function () {
     ]);
 });
 
-// Create | Fail Testcases
 test('service creation fails when required fields are missing', function () {
-    $response = $this->postJson('/api/services', [
-        'description' => 'Professional cleaning service',
-        'price' => 75.00,
-        'duration_minutes' => 180,
-        'status' => 'active',
-    ]);
+    $manager = User::factory()->manager()->create();
+
+    $response = $this->actingAs($manager)
+        ->postJson('/api/services', [
+            'description' => 'Professional cleaning service',
+            'price' => 75.00,
+            'duration_minutes' => 180,
+            'status' => 'active',
+        ]);
 
     $response
         ->assertStatus(422)
@@ -44,14 +54,17 @@ test('service creation fails when required fields are missing', function () {
 });
 
 test('service creation fails with an invalid category', function () {
-    $response = $this->postJson('/api/services', [
-        'name' => 'Deep Cleaning',
-        'description' => 'Professional deep cleaning service',
-        'category_id' => 9999,
-        'price' => 100.00,
-        'duration_minutes' => 180,
-        'status' => 'active',
-    ]);
+    $manager = User::factory()->manager()->create();
+
+    $response = $this->actingAs($manager)
+        ->postJson('/api/services', [
+            'name' => 'Deep Cleaning',
+            'description' => 'Professional deep cleaning service',
+            'category_id' => 9999,
+            'price' => 100.00,
+            'duration_minutes' => 180,
+            'status' => 'active',
+        ]);
 
     $response
         ->assertStatus(422)
@@ -60,8 +73,14 @@ test('service creation fails with an invalid category', function () {
         ]);
 });
 
-// Update | Success Testcase
+/*
+|--------------------------------------------------------------------------
+| UPDATE
+|--------------------------------------------------------------------------
+*/
+
 test('a valid service can be updated', function () {
+    $manager = User::factory()->manager()->create();
     $category = ServiceCategory::factory()->create();
 
     $service = Service::create([
@@ -75,14 +94,15 @@ test('a valid service can be updated', function () {
 
     $newCategory = ServiceCategory::factory()->create();
 
-    $response = $this->putJson("/api/services/{$service->id}", [
-        'name' => 'Premium House Cleaning',
-        'description' => 'Deep professional cleaning',
-        'category_id' => $newCategory->id,
-        'price' => 80.00,
-        'duration_minutes' => 180,
-        'status' => 'inactive',
-    ]);
+    $response = $this->actingAs($manager)
+        ->putJson("/api/services/{$service->id}", [
+            'name' => 'Premium House Cleaning',
+            'description' => 'Deep professional cleaning',
+            'category_id' => $newCategory->id,
+            'price' => 80.00,
+            'duration_minutes' => 180,
+            'status' => 'inactive',
+        ]);
 
     $response
         ->assertStatus(200)
@@ -100,8 +120,8 @@ test('a valid service can be updated', function () {
     ]);
 });
 
-// Update | Fail Testcases
 test('service update fails when required fields are missing', function () {
+    $manager = User::factory()->manager()->create();
     $category = ServiceCategory::factory()->create();
 
     $service = Service::create([
@@ -113,9 +133,10 @@ test('service update fails when required fields are missing', function () {
         'status' => 'active',
     ]);
 
-    $response = $this->putJson("/api/services/{$service->id}", [
-        'price' => 80.00,
-    ]);
+    $response = $this->actingAs($manager)
+        ->putJson("/api/services/{$service->id}", [
+            'price' => 80.00,
+        ]);
 
     $response
         ->assertStatus(422)
@@ -128,6 +149,7 @@ test('service update fails when required fields are missing', function () {
 });
 
 test('service update fails with invalid data', function () {
+    $manager = User::factory()->manager()->create();
     $category = ServiceCategory::factory()->create();
 
     $service = Service::create([
@@ -139,14 +161,15 @@ test('service update fails with invalid data', function () {
         'status' => 'active',
     ]);
 
-    $response = $this->putJson("/api/services/{$service->id}", [
-        'name' => 'House Cleaning',
-        'description' => 'Professional cleaning service',
-        'category_id' => 9999,
-        'price' => -10,
-        'duration_minutes' => 0,
-        'status' => 'unknown',
-    ]);
+    $response = $this->actingAs($manager)
+        ->putJson("/api/services/{$service->id}", [
+            'name' => 'House Cleaning',
+            'description' => 'Professional cleaning service',
+            'category_id' => 9999,
+            'price' => -10,
+            'duration_minutes' => 0,
+            'status' => 'unknown',
+        ]);
 
     $response
         ->assertStatus(422)
@@ -159,22 +182,30 @@ test('service update fails with invalid data', function () {
 });
 
 test('updating a non-existent service returns not found', function () {
+    $manager = User::factory()->manager()->create();
     $category = ServiceCategory::factory()->create();
 
-    $response = $this->putJson('/api/services/9999', [
-        'name' => 'Updated Service',
-        'description' => 'Updated description',
-        'category_id' => $category->id,
-        'price' => 80.00,
-        'duration_minutes' => 120,
-        'status' => 'active',
-    ]);
+    $response = $this->actingAs($manager)
+        ->putJson('/api/services/9999', [
+            'name' => 'Updated Service',
+            'description' => 'Updated description',
+            'category_id' => $category->id,
+            'price' => 80.00,
+            'duration_minutes' => 120,
+            'status' => 'active',
+        ]);
 
     $response->assertStatus(404);
 });
 
-// Patch | Success Testcase
+/*
+|--------------------------------------------------------------------------
+| PATCH
+|--------------------------------------------------------------------------
+*/
+
 test('a service can be partially updated', function () {
+    $manager = User::factory()->manager()->create();
     $category = ServiceCategory::factory()->create();
 
     $service = Service::create([
@@ -186,9 +217,10 @@ test('a service can be partially updated', function () {
         'status' => 'active',
     ]);
 
-    $response = $this->patchJson("/api/services/{$service->id}", [
-        'price' => 75.00,
-    ]);
+    $response = $this->actingAs($manager)
+        ->patchJson("/api/services/{$service->id}", [
+            'price' => 75.00,
+        ]);
 
     $response
         ->assertStatus(200)
@@ -205,8 +237,8 @@ test('a service can be partially updated', function () {
     ]);
 });
 
-// Patch | Fail Testcase
 test('service patch fails with invalid data', function () {
+    $manager = User::factory()->manager()->create();
     $category = ServiceCategory::factory()->create();
 
     $service = Service::create([
@@ -218,11 +250,12 @@ test('service patch fails with invalid data', function () {
         'status' => 'active',
     ]);
 
-    $response = $this->patchJson("/api/services/{$service->id}", [
-        'price' => -10,
-        'duration_minutes' => 0,
-        'status' => 'unknown',
-    ]);
+    $response = $this->actingAs($manager)
+        ->patchJson("/api/services/{$service->id}", [
+            'price' => -10,
+            'duration_minutes' => 0,
+            'status' => 'unknown',
+        ]);
 
     $response
         ->assertStatus(422)
@@ -234,15 +267,24 @@ test('service patch fails with invalid data', function () {
 });
 
 test('patching a non-existent service returns not found', function () {
-    $response = $this->patchJson('/api/services/9999', [
-        'price' => 75.00,
-    ]);
+    $manager = User::factory()->manager()->create();
+
+    $response = $this->actingAs($manager)
+        ->patchJson('/api/services/9999', [
+            'price' => 75.00,
+        ]);
 
     $response->assertStatus(404);
 });
 
-// Delete | Success Testcase
+/*
+|--------------------------------------------------------------------------
+| DELETE
+|--------------------------------------------------------------------------
+*/
+
 test('a service can be soft deleted', function () {
+    $manager = User::factory()->manager()->create();
     $category = ServiceCategory::factory()->create();
 
     $service = Service::create([
@@ -254,7 +296,9 @@ test('a service can be soft deleted', function () {
         'status' => 'active',
     ]);
 
-    $response = $this->deleteJson("/api/services/{$service->id}");
+    $response = $this->actingAs($manager)
+        ->deleteJson("/api/services/{$service->id}");
+
     $response->assertNoContent();
 
     $this->assertSoftDeleted('services', [
@@ -262,7 +306,6 @@ test('a service can be soft deleted', function () {
     ]);
 });
 
-// Delete | Fail Testcase
 test('a soft deleted service is not returned in the service list', function () {
     $category = ServiceCategory::factory()->create();
 
@@ -287,7 +330,10 @@ test('a soft deleted service is not returned in the service list', function () {
 });
 
 test('deleting a non-existent service returns not found', function () {
-    $response = $this->deleteJson('/api/services/9999');
+    $manager = User::factory()->manager()->create();
+
+    $response = $this->actingAs($manager)
+        ->deleteJson('/api/services/9999');
 
     $response->assertStatus(404);
 });
