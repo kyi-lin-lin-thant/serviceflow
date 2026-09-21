@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\UserRole;
 use App\Models\Booking;
 use App\Models\User;
 
@@ -12,7 +13,10 @@ class BookingPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return in_array($user->role, [
+            UserRole::CUSTOMER,
+            UserRole::MANAGER,
+        ], true);
     }
 
     /**
@@ -20,7 +24,11 @@ class BookingPolicy
      */
     public function view(User $user, Booking $booking): bool
     {
-        return $user->id === $booking->customer_id;
+        return $user->role === UserRole::MANAGER
+            || (
+                $user->role === UserRole::CUSTOMER
+                && $user->id === $booking->customer_id
+            );
     }
 
     /**
@@ -28,7 +36,7 @@ class BookingPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role === UserRole::CUSTOMER;
     }
 
     /**
@@ -36,7 +44,11 @@ class BookingPolicy
      */
     public function update(User $user, Booking $booking): bool
     {
-        return false;
+        return $user->role === UserRole::MANAGER
+            || (
+                $user->role === UserRole::CUSTOMER
+                && $user->id === $booking->customer_id
+            );
     }
 
     /**
@@ -44,22 +56,10 @@ class BookingPolicy
      */
     public function delete(User $user, Booking $booking): bool
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Booking $booking): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Booking $booking): bool
-    {
-        return false;
+        return $user->role === UserRole::MANAGER
+            || (
+                $user->role === UserRole::CUSTOMER
+                && $user->id === $booking->customer_id
+            );
     }
 }

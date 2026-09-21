@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\BookingStatus;
 use App\Models\Booking;
 use App\Models\Service;
 use App\Models\User;
@@ -25,6 +26,7 @@ class BookingFactory extends Factory
             'booking_date' => fake()->date(),
             'booking_time' => fake()->time(),
             'address' => fake()->address(),
+            'status' => BookingStatus::PENDING,
         ];
     }
 }

@@ -29,9 +29,11 @@ Route::middleware(['auth:sanctum', 'role:manager'])->group(function () {
 });
 
 // Bookings
-Route::get('/bookings', [BookingController::class, 'index']);
-Route::post('/bookings', [BookingController::class, 'store']);
-Route::get('/bookings/{booking}', [BookingController::class, 'show']);
-Route::put('/bookings/{booking}', [BookingController::class, 'update']);
-// Route::patch('/bookings/{booking}', [BookingController::class, 'patch']);
-Route::delete('/bookings/{booking}', [BookingController::class, 'destroy']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/bookings', [BookingController::class, 'index']);
+    Route::post('/bookings', [BookingController::class, 'store']);
+    Route::get('/bookings/{booking}', [BookingController::class, 'show']);
+    Route::put('/bookings/{booking}', [BookingController::class, 'update']);
+    // Route::patch('/bookings/{booking}', [BookingController::class, 'patch']);
+    Route::delete('/bookings/{booking}', [BookingController::class, 'destroy']);
+});

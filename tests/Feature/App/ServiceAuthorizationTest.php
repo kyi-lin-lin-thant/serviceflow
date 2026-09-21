@@ -179,7 +179,7 @@ test('staff cannot delete a service', function () {
 });
 
 // Customer cannot delete
-test('customer cannot delete a service', function () {
+test('customer  cannot delete a service', function () {
     $customer = User::factory()->customer()->create();
     $service = Service::factory()->create();
 

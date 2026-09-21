@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidBookingDateTime;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -12,7 +13,7 @@ class StoreBookingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()?->role?->value === 'customer';
     }
 
     /**
@@ -23,13 +24,11 @@ class StoreBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'customer_id' => [],
-            'service_id' => [],
-            'booking_date' => [],
-            'booking_time' => [],
-            'address' => [],
-            'notes' => [],
-            'status' => ['required', 'in:active,inactive'],
+            'service_id' => ['required', 'integer', 'exists:services,id'],
+            'booking_date' => ['required', 'date', 'after_or_equal:today'],
+            'booking_time' => ['required', 'date_format:H:i', new ValidBookingDateTime],
+            'address' => ['required', 'string', 'max:255'],
+            'notes' => ['nullable', 'string'],
         ];
     }
 }

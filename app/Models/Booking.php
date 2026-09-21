@@ -2,11 +2,17 @@
 
 namespace App\Models;
 
+use App\Enums\BookingStatus;
 use Database\Factories\BookingFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property Carbon $booking_date
+ * @property Carbon $booking_time
+ */
 class Booking extends Model
 {
     /** @use HasFactory<BookingFactory> */
@@ -27,6 +33,7 @@ class Booking extends Model
         return [
             'booking_date' => 'date',
             'booking_time' => 'datetime:H:i',
+            'status' => BookingStatus::class,
         ];
     }
 
